@@ -1,0 +1,53 @@
+ABC Technologies - Technical Manual
+
+SYSTEM REQUIREMENTS:
+- Operating System: Windows 10/11, macOS 12+, Ubuntu 20.04+
+- Browser: Chrome 90+, Firefox 88+, Edge 90+, Safari 14+
+- RAM: Minimum 4 GB (8 GB recommended)
+- Internet: Stable broadband connection (minimum 5 Mbps)
+
+INSTALLATION GUIDE:
+1. Visit https://app.abctechnologies.com
+2. Click "Download Desktop App" (optional - web version available)
+3. Run the installer and follow on-screen instructions
+4. Log in with your registered email and password
+5. Complete the initial setup wizard
+
+LOGIN ISSUES:
+- Forgot password: Click "Forgot Password" on the login page and follow email instructions.
+- Account locked: Accounts are locked after 5 failed login attempts. Wait 15 minutes or contact support.
+- SSO login: Use your company's SSO link provided by your admin.
+- Two-Factor Authentication (2FA): Ensure your authenticator app is synced correctly.
+
+FILE UPLOAD ISSUES AND APPLICATION CRASHES:
+- Supported file types: PDF, DOCX, XLSX, PNG, JPG, CSV (max 50 MB per file)
+- If the application crashes during file upload:
+  1. Clear browser cache and cookies.
+  2. Try a different browser or incognito mode.
+  3. Ensure the file size is under 50 MB.
+  4. Disable browser extensions that may interfere.
+  5. Check your internet connection stability.
+  6. If the issue persists, contact Technical Support with the error log.
+
+CONFIGURATION ISSUES:
+- API key setup: Go to Settings > Developer > API Keys.
+- Webhook configuration: Settings > Integrations > Webhooks.
+- Email notification settings: Settings > Notifications > Email Preferences.
+
+ERROR CODES:
+- ERR_001: Session expired - log in again.
+- ERR_002: File too large - reduce file size below 50 MB.
+- ERR_003: Unsupported format - convert to a supported file type.
+- ERR_004: Server timeout - retry after a few minutes.
+- ERR_005: Permission denied - contact your account admin.
+
+PERFORMANCE TIPS:
+- Use Chrome for the best experience.
+- Clear cache regularly.
+- Avoid uploading multiple large files simultaneously.
+- Enable hardware acceleration in browser settings.
+
+CONTACTING TECHNICAL SUPPORT:
+- Email: techsupport@abctechnologies.com
+- Live Chat: Available in-app during business hours
+- Priority ticket: Submit via the Help Center for Enterprise customers
