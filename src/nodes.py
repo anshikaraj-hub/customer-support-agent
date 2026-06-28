@@ -228,20 +228,40 @@ def memory_agent_node(state: SupportState) -> SupportState:
     """Handles queries about previous interactions using stored memory."""
     print("\n[Memory Agent] Handling memory recall query...")
 
-    # Reload fresh history directly from database
-    fresh_history = get_conversation_history(state["customer_id"], limit=20)
-    history_text = format_history_for_prompt(fresh_history)
-    name = get_customer_name(state["customer_id"]) or "Customer"
+    # Import DB_PATH directly to read fresh from database
+    from src.memory import DB_PATH
+    import sqlite3
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT role, content, intent FROM conversations
+        WHERE customer_id = ?
+        ORDER BY timestamp ASC
+    """, (state["customer_id"],))
+    rows = cursor.fetchall()
+    conn.close()
+
+    if not rows:
+        history_text = "No previous conversation history found."
+    else:
+        lines = []
+        for row in rows:
+            role = "Customer" if row[0] == "user" else "Support Agent"
+            intent_tag = f" [Intent: {row[2]}]" if row[2] else ""
+            lines.append(f"{role}{intent_tag}: {row[1]}")
+        history_text = "\n".join(lines)
+
+    print(f"[Memory Agent] Found {len(rows)} messages in history.")
 
     system = """You are a helpful customer support assistant for ABC Technologies.
 The customer is asking about their previous support interactions.
 Use the conversation history below to answer accurately.
 Return ONLY the response to send to the customer.
-Do NOT include any commentary, notes, or explanations.
-Do NOT use [Customer] or [Your Name] placeholders."""
+Do NOT include any commentary or notes.
+Do NOT use placeholders like [Customer] or [Your Name]."""
 
-    user = f"""Customer Name: {name}
-Customer Query: {state['customer_query']}
+    user = f"""Customer Query: {state['customer_query']}
 
 Previous Conversation History:
 {history_text}
