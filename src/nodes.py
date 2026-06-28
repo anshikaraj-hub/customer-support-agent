@@ -272,12 +272,11 @@ def human_approval_node(state: SupportState) -> SupportState:
     decision = input("\nSupervisor: Approve this response? (yes/no): ").strip().lower()
 
     if decision in ["yes", "y", ""]:
-        notes = input("Supervisor notes (optional, press Enter to skip): ").strip()
         print("[Human Approval] Request APPROVED.")
         return {
             **state,
             "approval_status": "approved",
-            "supervisor_notes": notes or "Approved by supervisor.",
+            "supervisor_notes": "Approved by supervisor.",
         }
     else:
         reason = input("Supervisor: Reason for rejection: ").strip()
