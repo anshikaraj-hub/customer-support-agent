@@ -228,13 +228,17 @@ def memory_agent_node(state: SupportState) -> SupportState:
     """Handles queries about previous interactions using stored memory."""
     print("\n[Memory Agent] Handling memory recall query...")
 
-    history_text = format_history_for_prompt(state.get("conversation_history", []))
-    name = state.get("customer_name", "Customer")
+    # Reload fresh history directly from database
+    fresh_history = get_conversation_history(state["customer_id"], limit=20)
+    history_text = format_history_for_prompt(fresh_history)
+    name = get_customer_name(state["customer_id"]) or "Customer"
 
-    system = """You are a helpful customer support assistant.
+    system = """You are a helpful customer support assistant for ABC Technologies.
 The customer is asking about their previous support interactions.
-Use the conversation history below to answer their question accurately.
-If no history exists, politely let them know."""
+Use the conversation history below to answer accurately.
+Return ONLY the response to send to the customer.
+Do NOT include any commentary, notes, or explanations.
+Do NOT use [Customer] or [Your Name] placeholders."""
 
     user = f"""Customer Name: {name}
 Customer Query: {state['customer_query']}
@@ -242,7 +246,7 @@ Customer Query: {state['customer_query']}
 Previous Conversation History:
 {history_text}
 
-Answer the customer's question:"""
+Answer the customer's question about their history:"""
 
     response = call_llm(system, user)
 
