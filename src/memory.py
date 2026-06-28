@@ -7,7 +7,7 @@ from datetime import datetime
 from typing import List, Dict, Optional
 
 # Database will be created in the root project folder
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "memory.db")
+DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "memory.db")
 
 
 def init_db():
@@ -47,7 +47,7 @@ def save_message(
     conn.close()
 
 
-def get_conversation_history(customer_id: str, limit: int = 10) -> List[Dict]:
+def get_conversation_history(customer_id: str, limit: int = 20) -> List[Dict]:
     """Retrieve the last N messages for a given customer."""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -55,16 +55,15 @@ def get_conversation_history(customer_id: str, limit: int = 10) -> List[Dict]:
         SELECT role, content, intent, timestamp
         FROM conversations
         WHERE customer_id = ?
-        ORDER BY timestamp DESC
+        ORDER BY timestamp ASC
         LIMIT ?
     """, (customer_id, limit))
     rows = cursor.fetchall()
     conn.close()
 
-    # Reverse so oldest message comes first
     history = [
         {"role": row[0], "content": row[1], "intent": row[2], "timestamp": row[3]}
-        for row in reversed(rows)
+        for row in rows
     ]
     return history
 
