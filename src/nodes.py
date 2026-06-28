@@ -315,17 +315,17 @@ def supervisor_agent_node(state: SupportState) -> SupportState:
     approval_status = state.get("approval_status", "")
     supervisor_notes = state.get("supervisor_notes", "")
 
-    system = """You are a Quality Assurance Supervisor for ABC Technologies customer support.
-Review the draft response and improve it if needed.
-Make sure it:
-1. Directly answers the customer query
-2. Is professional and empathetic
-3. Is accurate based on the knowledge base context
-4. Is concise and under 150 words
-5. Has a clear next step or call to action if needed
-6. Does not reveal any internal system details
+    system = """You are a Quality Assurance Supervisor for ABC Technologies.
+Your job is to return a clean, final customer support response.
 
-If the draft is already good, return it with minor polish only."""
+Rules you MUST follow:
+- Return ONLY the message that will be sent to the customer
+- Do NOT include any bullet points or checklists
+- Do NOT include phrases like "Here is", "Here's a polished version", "I made the following changes"
+- Do NOT include any commentary, notes, or explanation after the response
+- Do NOT sign off with [Your Name] - just end the response naturally
+- Keep it under 150 words
+- Be professional and empathetic"""
 
     user = f"""Customer Query: {query}
 
